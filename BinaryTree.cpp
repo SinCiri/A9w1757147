@@ -80,11 +80,18 @@ void BinaryTree::deleteNode(int data)
          prev=searchPrev(data);
          TreeNode* next;
          // Case 1. if the node to be deleted is a leaf (use isLeaf Method)
-         // determine if its the left or right child of parent and set
-         // that link to null pointer and release memory of (using remove method) the found node
+         // determine if its the left or right child of parent and set that link to null pointer and release memory of (using remove method) the found node
          if (found->isLeaf()) 
          {
-            // TODO 
+            if (prev->getLeft() == nullptr) {
+              prev->setRight(nullptr);
+              remove(found);
+            }
+            else {
+              prev->setLeft(nullptr);
+              remove(found);
+            }
+            
           }
     //2. has either One child right or left branch
        else if (hasOneChild(found))
@@ -95,6 +102,15 @@ void BinaryTree::deleteNode(int data)
                  // this will depend on whether the found node is the right or left child of parent
                 // release found node
                  //TODO 
+                 TreeNode* temp = findNext(found);
+                 if (found->getRight() == nullptr) {
+                  found->setRight(temp);
+                  delete temp; 
+                 }
+                 else if (found->getLeft() == nullptr) {
+                  found->setLeft(temp);
+                  delete temp; 
+                 }
       }
    //two child nodes
    else {
@@ -104,7 +120,21 @@ void BinaryTree::deleteNode(int data)
      // find in order successor
      TreeNode * successor = inorderSuccessor(found);
      //determine if the found node is the left or right child of the parent and set the next of the parent to the inorder successor
+     if (prev->getLeft() == nullptr) {
+      prev->setRight(successor);
+     }
+     else {
+      prev->setLeft(successor);
+     }
      // if the node to be deleted is the root then the root also has be 
+     if (found == root) {
+      if (root->getLeft() == nullptr) {
+        root->setRight(successor);
+      }
+      else {
+        root->setLeft(successor);
+      }
+     }
      // set accordindly
     // TODO
     }
